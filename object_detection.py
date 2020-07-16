@@ -66,7 +66,7 @@ class MusicDataset(object):
         labels = records[['class_name']].values
         
         label_ids = self.__get_label_id__(labels)
-        labels = torch.as_tensor(label_ids, dtype=torch.int16)
+        labels = torch.as_tensor(label_ids, dtype=torch.int64)
        
         boxes = torch.as_tensor(boxes, dtype = torch.float32)
        

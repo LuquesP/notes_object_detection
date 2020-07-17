@@ -19,7 +19,7 @@ import transforms as T
 
 NUM_CLASSES = 40 
 
-class MusicDataset(object): 
+class MusicDataset(Dataset): 
     def __init__(self, root, transforms, dataframe):
         self.root = root 
         self.transforms = transforms
@@ -115,8 +115,8 @@ def main():
 
     dataset_train = MusicDataset(data_dir, get_transform(train=False), df_train)
     dataset_validation = MusicDataset(data_dir, get_transform(train=False), df_validation) 
-    data_loader_train = torch.utils.data.DataLoader(dataset_train, batch_size=1,shuffle=True, num_workers=4, collate_fn=utils.collate_fn )
-    data_loader_validation = torch.utils.data.DataLoader(dataset_validation, batch_size=1,shuffle=True, num_workers=4, collate_fn=utils.collate_fn )
+    data_loader_train = torch.utils.data.DataLoader(dataset_train, batch_size=1,shuffle=True, num_workers=1,  collate_fn=utils.collate_fn )
+    data_loader_validation = torch.utils.data.DataLoader(dataset_validation, batch_size=1,shuffle=True, num_workers=1,  collate_fn=utils.collate_fn )
 
     model = get_model() 
     model.to(device) 
@@ -140,11 +140,18 @@ def main():
         evaluate(model, data_loader_validation, device=device)
 
     print("That's it!")
-
+    
 if __name__ == "__main__":
     # data_dir = os.path.join(os.getcwd(), 'data', 'normalized', 'deepscores') 
     # df = pd.read_csv(os.path.join(data_dir, 'annotations.csv'))     
-    # data = MusicDataset(data_dir, get_transform(train=False), df)
-    # image, target = data.__getitem__(2) 
-    # print(image) 
+    # dataset = MusicDataset(data_dir, get_transform(train=False), df)
+    # image, target = dataset.__getitem__(2) 
+    # dataloader = torch.utils.data.DataLoader(dataset, batch_size=1,shuffle=False, num_workers=4,  collate_fn=utils.collate_fn )
+    # print(len(dataloader)) 
+
+    # # for i, batch in enumerate(dataloader): 
+    # #     print(i, batch) 
+    # print(len(dataset))
+    # # print(dataset[10])
+    # print(target['boxes'].shape) 
     main() 
